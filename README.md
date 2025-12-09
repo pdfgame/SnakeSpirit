@@ -2,7 +2,7 @@
 
 ## 项目背景 / Project Background
 
-本项目是基于现有GitHub贪吃蛇项目灵感开发的双模式贪吃蛇游戏，结合了经典游戏玩法与现代手势控制技术。项目采用Python、OpenCV和Pygame开发，支持两种游戏模式，具有精美的视觉效果和丰富的设置选项。
+本项目是基于现有 GitHub 贪吃蛇项目灵感开发的双模式贪吃蛇游戏，结合了经典游戏玩法与现代手势控制技术。项目采用Python、OpenCV和Pygame开发，支持两种游戏模式，具有精美的视觉效果和丰富的设置选项。
 
 This project is a dual-mode snake game developed based on inspiration from existing GitHub snake game projects, combining classic gameplay with modern gesture control technology. The project is developed using Python, OpenCV, and Pygame, supporting two game modes with exquisite visual effects and rich setting options.
 
