@@ -1647,3 +1647,4 @@ class GameController:
 if __name__ == '__main__':
     controller = GameController()
     controller.run()
+    #由pxf改编
