@@ -65,7 +65,8 @@ SnakeGame-main/
 - **计算机视觉 / Computer Vision**：OpenCV
 - **手势识别 / Gesture Recognition**：
   - 优先使用：cvzone.HandDetector（依赖mediapipe模型）
-  - 备用方案：自定义SimpleHandDetector（基于肤色检测和轮廓分析，不依赖mediapipe）
+  - 备选方案：独立MediaPipe Hands检测器（无需cvzone，直接加载task模型）
+  - 最终兜底：自定义SimpleHandDetector（基于肤色检测和轮廓分析，不依赖mediapipe）
 - **图像处理 / Image Processing**：PIL (Pillow)
 - **UI框架 / UI Framework**：pygame_gui
 
@@ -80,6 +81,9 @@ SnakeGame-main/
 ```bash
 pip install -r requirements.txt
 ```
+
+> 注意：依赖文件已经锁定 `mediapipe` 与 `protobuf<5` 的组合来避免与 `tensorflow` 的冲突，请勿额外安装 `tensorflow`，否则会触发`protobuf`版本互斥。  
+> Note: The requirements file pins `mediapipe` together with `protobuf<5` to avoid the conflict introduced by TensorFlow. Do not install TensorFlow on top of these deps, otherwise pip will attempt to upgrade protobuf and break mediapipe.
 
 ## 运行游戏 / Run the Game
 
@@ -141,6 +145,13 @@ python main.py
   Contains test code for the game
 - **docs/**：包含游戏的文档
   Contains documentation for the game
+
+### 手势检测架构 / Gesture Detection Pipeline
+1. **cvzone.HandDetector + MediaPipe**：默认方案，具备最稳定的手势识别和绘制接口。
+2. **独立MediaPipe Hands**：当cvzone不可用或初始化失败时，项目会直接构建MediaPipe Hands检测器，复用相同的`findHands`接口。
+3. **SimpleHandDetector**：完全不依赖mediapipe的兜底方案，通过肤色分割和轮廓分析维持基本的手势输入能力。
+
+该多级策略确保不会再因为`tensorflow`与`protobuf`冲突导致手势模式无法启动。
 
 ### 代码规范 / Code Standards
 

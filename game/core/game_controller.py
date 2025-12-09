@@ -5,7 +5,6 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 os.environ['GLOG_minloglevel'] = '2'
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import cv2
 import numpy as np
@@ -365,29 +364,14 @@ class GameController:
         
         if hand_tracking_available:
             try:
-
-
-
                 self.hand_detector = HandDetector(detectionCon=0.1, maxHands=1)
                 self.hand_tracking_enabled = True
                 print("手部检测初始化成功（使用cvzone.HandDetector，优化对半只手的检测）")
             except Exception as e:
                 print(f"初始化cvzone手部检测失败: {e}")
-
-                print("降级使用SimpleHandDetector，优化对半只手的检测")
-
-                self.hand_detector = SimpleHandDetector(detectionCon=0.3, maxHands=1)
-                self.hand_tracking_enabled = True
+                self._init_backup_hand_detector(detection_conf=0.4)
         else:
-
-            try:
-                print("使用SimpleHandDetector作为备用，优化对半只手的检测")
-                self.hand_detector = SimpleHandDetector(detectionCon=0.5, maxHands=1)
-                self.hand_tracking_enabled = True
-            except Exception as e:
-                print(f"初始化SimpleHandDetector失败: {e}")
-                self.hand_tracking_enabled = False
-                self.hand_detector = None
+            self._init_backup_hand_detector(detection_conf=0.5)
         
 
 
@@ -518,6 +502,29 @@ class GameController:
         
         # 隐藏所有按钮直到需要它们
         self.hide_all_buttons()    # 期末汇报（12月底）之前请勿乱用该项目
+
+    def _init_backup_hand_detector(self, detection_conf=0.5):
+        """兜底初始化，优先尝试独立的MediaPipe检测器，最后再用SimpleHandDetector"""
+        try:
+            from game.core.tflite_hand_detector import TFLiteHandDetector
+            detector = TFLiteHandDetector(max_hands=1, min_detection_confidence=detection_conf)
+            if detector.is_loaded:
+                self.hand_detector = detector
+                self.hand_tracking_enabled = True
+                print("MediaPipe手势检测器初始化成功（独立模式）")
+                return
+            raise RuntimeError("MediaPipe检测器未就绪")
+        except Exception as e:
+            print(f"独立MediaPipe手势检测器初始化失败: {e}")
+
+        try:
+            print("使用SimpleHandDetector作为备用，优化对半只手的检测")
+            self.hand_detector = SimpleHandDetector(detectionCon=detection_conf, maxHands=1)
+            self.hand_tracking_enabled = True
+        except Exception as e:
+            print(f"初始化SimpleHandDetector失败: {e}")
+            self.hand_tracking_enabled = False
+            self.hand_detector = None
 
     def hide_all_buttons(self):
         # 隐藏所有按钮，无论它们是否存在
@@ -955,9 +962,9 @@ class GameController:
                     try:
                         from game.core.tflite_hand_detector import TFLiteHandDetector
                         self.hand_detector = TFLiteHandDetector()
-                        print("TFLite手部检测器初始化成功")
+                        print("MediaPipe手部检测器初始化成功")
                     except Exception as e:
-                        print(f"TFLite手部检测器初始化失败，回退到cvzone.HandDetector: {e}")
+                        print(f"MediaPipe手部检测器初始化失败，回退到cvzone.HandDetector: {e}")
                         try:
                             from cvzone.HandTrackingModule import HandDetector
                             self.hand_detector = HandDetector(detectionCon=0.7, maxHands=1)

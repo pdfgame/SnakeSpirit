@@ -1,10 +1,10 @@
 # 游戏依赖项 / Game Dependencies
-pygame-ce             # 游戏开发框架 / Game development framework
-opencv-python         # 计算机视觉库 / Computer vision library
-cvzone                # 手势识别库 / Gesture recognition library
-pillow                # 图像处理库 / Image processing library
-numpy                 # 数值计算库 / Numerical computing library
-pygame_gui            # GUI界面库 / GUI interface library
-tensorflow            # TensorFlow框架（用于TFLite模型）/ TensorFlow framework (for TFLite models)
-requests              # HTTP请求库（用于下载模型）/ HTTP request library (for downloading models)
-# moderngl             # 现代OpenGL库（可选，用于3D渲染）/ Modern OpenGL library (optional, for 3D rendering)
+pygame-ce>=2.5.6,<3.0            # 游戏开发框架 / Game development framework
+pygame_gui>=0.6.9,<0.7          # GUI界面库 / GUI interface library
+opencv-python>=4.9,<5.0         # 计算机视觉库 / Computer vision library
+numpy>=1.24,<2.0                # 数值计算库 / Numerical computing library
+pillow>=10.2,<11.0              # 图像处理库 / Image processing library
+cvzone>=1.6.1,<2.0              # 手势识别库 / Gesture recognition library
+mediapipe>=0.10.14,<0.11        # Mediapipe模型 / Mediapipe models
+protobuf>=3.20.3,<5.0           # Mediapipe依赖 / Mediapipe dependency
+requests>=2.31,<3.0             # HTTP请求库（用于下载模型）/ HTTP request library (for downloading models)
