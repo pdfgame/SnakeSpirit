@@ -585,20 +585,27 @@ class SnakeGame:
                 snake_radius = 20  
                 
                 # 初始位置特殊处理：如果是游戏开始后的第一个位置，跳过碰撞检测
-                if len(self.points) > 1:  # 只有当蛇有至少两个点时才进行碰撞检测
-                    if (cx - snake_radius < 0 or 
-                        cx + snake_radius > screen_width or 
-                        cy - snake_radius < 0 or 
-                        cy + snake_radius > screen_height):
-                        print("碰到屏幕边缘，游戏结束")
-                        self.game_over_reason = get_translation('classic_edge_death')
-                        self.gameOver = True  # 期末汇报（12月底）之前请勿乱用该项目
-                        # 播放游戏结束音效
-                        if self.fail_sound:
-                            try:
-                                self.fail_sound.play()
-                            except Exception as e:
-                                print(f"播放游戏结束音效失败: {e}")
+                # 只有当蛇有足够长度且不是初始位置时才进行碰撞检测
+                # 添加更多安全检查：确保屏幕尺寸有效，且蛇头位置有效
+                # 游戏刚启动时，self.points列表长度会很快增加到2，所以需要额外的初始位置保护
+                is_initial_position = (len(self.points) == 2 and self.currentLength <= self.base_allowed_length + 10)
+                if len(self.points) > 2 and not is_initial_position and self.previousHead is not None and screen_width > 0 and screen_height > 0:  # 确保蛇有足够长度且不是初始位置
+                    # 检查cx和cy是否有效（不为默认的0,0），防止未检测到手部时触发边缘检测
+                    if (cx != 0 or cy != 0):
+                        # 正常的边缘检测逻辑
+                        if (cx - snake_radius < 0 or 
+                            cx + snake_radius > screen_width or 
+                            cy - snake_radius < 0 or 
+                            cy + snake_radius > screen_height):
+                            print("碰到屏幕边缘，游戏结束")
+                            self.game_over_reason = get_translation('classic_edge_death')
+                            self.gameOver = True  # 期末汇报（12月底）之前请勿乱用该项目
+                            # 播放游戏结束音效
+                            if self.fail_sound:
+                                try:
+                                    self.fail_sound.play()
+                                except Exception as e:
+                                    print(f"播放游戏结束音效失败: {e}")
                     
                     for obstacle_pos in self.obstacles:
                         ox, oy = obstacle_pos
