@@ -46,7 +46,7 @@ class SnakeGame:
         self.hFood, self.wFood, _ = self.imgFood.shape
         
         base_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-        obstacle_path = os.path.join(base_path, "resources", "assets", "images", "stone.png")
+        obstacle_path = os.path.join(base_path, "resources", "assets", "images", "stone2.jpg")
         self.imgObstacle = cv2.imread(obstacle_path, cv2.IMREAD_UNCHANGED)
         if self.imgObstacle is None:
             self.imgObstacle = np.zeros((30, 30, 4), dtype=np.uint8)
