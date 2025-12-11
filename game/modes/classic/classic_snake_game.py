@@ -203,11 +203,15 @@ class ClassicSnakeGame:
                 # 确保障碍物不会出现在蛇的初始位置或周围
                 snake_head = self.snake[0]
                 # 计算障碍物与蛇头的曼哈顿距离
-                distance = abs(obstacle_pos[0] - snake_head[0]) + abs(obstacle_pos[1] - snake_head[1])
-                # 确保蛇头周围2格内没有障碍物
-                if distance > 2 and obstacle_pos not in self.obstacles:
-                    self.obstacles.append(obstacle_pos)
+                distance_to_head = abs(obstacle_pos[0] - snake_head[0]) + abs(obstacle_pos[1] - snake_head[1])
+                
+                if (distance_to_head >= 2 and 
+                    obstacle_pos not in self.snake and 
+                    (not hasattr(self, 'foods') or obstacle_pos not in self.foods) and
+                    (not hasattr(self, 'fake_foods') or obstacle_pos not in self.fake_foods)):
                     break
+            
+            self.obstacles.append(obstacle_pos)
 
     def handle_input(self, event):
         if not self.game_over:

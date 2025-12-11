@@ -102,7 +102,7 @@ class SnakeGame:
                 break
     
     def randomObstacleLocations(self):
-        """随机生成障碍物位置，确保在屏幕边缘，远离中心区域"""
+        """随机生成障碍物位置，确保在屏幕边缘，远离中心区域和食物"""
         self.obstacles = []
         screen_width, screen_height = 1280, 720  
         center_x, center_y = screen_width // 2, screen_height // 2
@@ -125,6 +125,15 @@ class SnakeGame:
                         if math.hypot(x - existing_pos[0], y - existing_pos[1]) < 100:  
                             overlap = True
                             break
+                    
+                    # 检查是否与食物重叠
+                    if hasattr(self, 'foodPos') and self.foodPos is not None:
+                        food_x, food_y = self.foodPos
+                        distance_to_food = math.hypot(x - food_x, y - food_y)
+                        min_distance = (self.wObstacle // 2) + (self.wFood // 2) + 20
+                        if distance_to_food < min_distance:
+                            overlap = True
+                    
                     if not overlap:
                         break
             
