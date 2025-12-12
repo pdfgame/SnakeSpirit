@@ -141,7 +141,7 @@ class ClassicSnakeGame:
         # 属性包括：炸弹、变色、加速、减速、冻结
         properties = ['bomb', 'color_change', 'speed_up', 'speed_down', 'freeze', 'none']
         # 概率分布：降低炸弹概率到3%，普通假食物占33%
-        weights = [0.01, 0.16, 0.16, 0.16, 0.16, 0.33]
+        weights = [0.01, 0.16, 0.16, 0.16, 0.16, 0.35]
         
         for i in range(num_fake_foods):
             pos = self._place_fake_food()
