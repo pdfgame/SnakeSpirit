@@ -242,7 +242,7 @@ Welcome to submit Issues and Pull Requests to improve this project!
 
 For any questions or suggestions, please contact us through the following methods:
 
-- 邮箱1 / Email 1：phasisx_pdf_pxf@163.com
+- 邮箱1 / Email 1：paxfen@163.com
 - 邮箱2 / Email 2：xiaofeng9121@gmail.com
 
 ## 特别感谢 / Special Thanks
