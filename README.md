@@ -1,4 +1,4 @@
-# 双模式贪吃蛇游戏 / Dual-mode Snake Game
+# 蛇灵 / Snake Spirit
 
 ## 项目背景 / Project Background
 
